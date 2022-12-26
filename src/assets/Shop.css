@@ -1,0 +1,17 @@
+.shop-item-cover{
+    height: 80px;
+    width: 80px;
+}
+.shop-items-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+.shop-item{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+        align-items: center;
+}
