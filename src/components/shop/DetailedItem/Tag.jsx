@@ -23,7 +23,6 @@ function Tag(props){
             tags[props.filter] = [props.query]
         }
 
-        console.log(tags)
         return Object.keys(tags).map(filter => {
             return filter + '=' + tags[filter].join(',')
         }).join('&')

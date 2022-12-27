@@ -23,7 +23,7 @@ export default function Item(props) {
         <li className={"shop-item " + checked}>
             <div className="shop-img-container">
                 <img className="shop-item-cover" src={item.background_image} alt={item.name + ' cover'} />
-                <span className="shop-esrb">{item.esrb_rating.name}</span>
+                {item.esrb_rating && <span className="shop-esrb">{item.esrb_rating.name}</span>}
                 <span className="stars">
                     <div className="shopping-rating-top" style={{ width: item.rating * 20 + 'px' }}>
                         ★★★★★

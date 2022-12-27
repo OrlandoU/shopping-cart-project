@@ -9,7 +9,6 @@ export default function Shop(props){
     const tags = useParams()
 
     const parseQuery = () => {
-        console.log(tags)
         if (!Object.keys(tags).length) return ''
 
         let copTags = tags.query.split('&').map((wholeQuery, index) => {
@@ -57,7 +56,9 @@ export default function Shop(props){
     useEffect(()=>{
         queryGames()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page])
+    }, [page, tags])
+
+    console.log(items)
 
     return(
         <div>
