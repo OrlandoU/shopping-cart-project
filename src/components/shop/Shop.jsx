@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Item from "./Item";
 import '../../assets/Shop.css'
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 export default function Shop(props){
     const [page, setPage] = useState(1)
@@ -31,13 +31,12 @@ export default function Shop(props){
 
     const queryGames = async() => {
         document.querySelector('.loading-screen').classList.add('visible')
-        console.log(parseQuery())
         try {
             let response = await fetch(`https://api.rawg.io/api/games?key=a1922842dfc24abb9c57b3377ecc5774&page=${page}${parseQuery()}`)
             let data = await response.json()
             setItems(data.results)
         } catch (error) {
-            console.log(error)
+            throw error
         }
         document.querySelector('.loading-screen').classList.remove('visible')
         
@@ -56,19 +55,22 @@ export default function Shop(props){
     useEffect(()=>{
         queryGames()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page, tags])
+    }, [page])
 
-    console.log(items)
+    useEffect(()=>{
+        queryGames()
+    }, [useLocation()])
 
     return(
         <div>
+            <h1>{tags.query}</h1>
             <h1>Shop Page</h1>
             <ul className="tags-container">
 
             </ul>
             <ul className="shop-items-container">
                 {items.map(item=>(
-                    <Item tags={tags} cartHasItem={props.cartHasItem} key={item.id} {...props} item={item}/>
+                    <Item  tags={tags} cartHasItem={props.cartHasItem} key={item.id} {...props} item={item}/>
                 ))}
             </ul>
             <footer>

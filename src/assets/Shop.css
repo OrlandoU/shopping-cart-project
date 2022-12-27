@@ -22,10 +22,10 @@
 }
 .shop-items-container{
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(500px,1fr));
+    grid-template-columns: repeat(auto-fit, minmax(330px,1fr));
     justify-content: center;
     gap: 20px;
-    align-items: center;
+    align-items: stretch;
     padding: 54px 26px;
     max-width: 1100px;
     margin: auto;
@@ -41,6 +41,7 @@
         align-items: center;
     position: relative;
     background-color: white;
+    transition: 500ms;
 }
 .shop-item:hover{
     box-shadow: 0px 0px 20px rgba(128, 128, 128, 0.514);
@@ -65,9 +66,7 @@
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     transition: box-shadow 0.2s ease, background-color 150ms ease;
-    width: 90%;
-    padding: 0;
-    margin: 0px 20px 20px 20px
+    width: 100%;
 }
 .shop-item-button:active , .shop-item-button:hover{
     background-color: #eee;
@@ -177,15 +176,17 @@ svg{
     display: flex;
     justify-content: space-between;
     width: 100%;
-    padding: 0px 25px;
+    flex: 1;
+    align-items: flex-end;
+    margin: 15px 0px;
 }
 .shop-item-date{
     color: gray;
+    font-size: 1.1rem;
 }
 .shop-item-name{
     font-size: 1.2rem;
     font-weight: 600;
-    text-shadow: 2px -2px 5px rgba(0, 0, 0, 0.37);
 }
 .shop-esrb{
     position: absolute;
@@ -202,15 +203,27 @@ svg{
 }
 
 .shop-item-platforms{
-    padding: 15px 25px 0px 25px;
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+    padding: 0;
 }
 .shop-item-platforms a {
     color: black;
-    box-shadow: 0px 0px 10px rgba(3, 3, 3, 0.507);
+    box-shadow: 0px 0px 4px  1px rgba(3, 3, 3, 0.507);
     padding: 4px 12px;
     font-weight: 600;
+    font-size: .7rem;
     border-radius: 50px;
+    transition: 200ms ease;
+}
+.shop-item-platforms a:hover{
+    background-color: gainsboro;
+}
+.shop-item-bottom{
+    padding: 10px 20px;
+    width: 100%;
+    flex:1 ;
+    display: flex;
+    flex-direction: column;
 }

@@ -2,13 +2,14 @@ import { Link} from "react-router-dom";
 
 function Tag(props){
 
+
     const parseQuery = () => {
         if(!Object.keys(props.tags).length) return `${props.filter}=${props.query}`
         
-        let tags = props.tags.query.split('&').map((wholeQuery, index) => {
+        let tags = {...props.tags.query.split('&').map((wholeQuery, index) => {
             let query = wholeQuery.split('=')
             return { [query[0]]: query[1].split(',') }
-        })
+        })}
 
         let finalObj = {}
         for (let i = 0; i < tags.length; i++) {
@@ -22,7 +23,6 @@ function Tag(props){
         } else{
             tags[props.filter] = [props.query]
         }
-
         return Object.keys(tags).map(filter => {
             return filter + '=' + tags[filter].join(',')
         }).join('&')
