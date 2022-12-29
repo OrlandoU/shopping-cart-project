@@ -19,6 +19,8 @@ export default function Item(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    console.log('cehc')
+
     return (
         <li className={"shop-item " + checked}>
             <div className="shop-img-container">
