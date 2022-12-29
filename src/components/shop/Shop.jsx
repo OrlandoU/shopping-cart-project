@@ -2,48 +2,38 @@ import { useEffect, useState } from "react";
 import Item from "./Item";
 import '../../assets/Shop.css'
 import { useLocation, useParams } from "react-router-dom";
+import DetailedHeader from "./DetailedItem/DetailedHeader";
 
-export default function Shop(props){
+
+export default function Shop(props) {
     const [page, setPage] = useState(1)
     const [items, setItems] = useState([])
-    const tags = useParams()
+    const urlParams = useParams()
 
-    const parseQuery = () => {
-        if (!Object.keys(tags).length) return ''
-
-        let copTags = tags.query.split('&').map((wholeQuery, index) => {
-            let query = wholeQuery.split('=')
-            return { [query[0]]: query[1].split(',') }
-        })
-
-        let finalObj = {}
-        for (let i = 0; i < copTags.length; i++) {
-            Object.assign(finalObj, copTags[i]);
+    const getUrl = () => {
+        let url = new URLSearchParams(urlParams)
+        console.log(url.toString())
+        if(url.get('search')){
+            return `search=${url.get('search')}`
         }
-
-        copTags = finalObj
-
-        return "&"+ Object.keys(copTags).map(filter => {
-            return filter + '=' + copTags[filter].join(',')
-        }).join('&')
-
+        return url.get('filter') + '=' + url.get('value')
     }
 
-    const queryGames = async() => {
+    const queryGames = async () => {
         document.querySelector('.loading-screen').classList.add('visible')
         try {
-            let response = await fetch(`https://api.rawg.io/api/games?key=a1922842dfc24abb9c57b3377ecc5774&page=${page}${parseQuery()}`)
+            let response = await fetch(`https://api.rawg.io/api/games?key=a1922842dfc24abb9c57b3377ecc5774&page_size=50&page=${page}&${getUrl()}`)
             let data = await response.json()
             setItems(data.results)
         } catch (error) {
             throw error
         }
         document.querySelector('.loading-screen').classList.remove('visible')
-        
+
     }
 
     const handlePrevious = () => {
-        if(page > 1){
+        if (page > 1) {
             setPage(prevState => prevState - 1)
         }
     }
@@ -52,25 +42,21 @@ export default function Shop(props){
         setPage(prevState => prevState + 1)
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         queryGames()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [page, useLocation()])
 
-    useEffect(()=>{
-        queryGames()
-    }, [useLocation()])
+    
 
-    return(
-        <div>
-            <h1>{tags.query}</h1>
-            <h1>Shop Page</h1>
+    return (
+        <div className="shop-main-container">
+            {new URLSearchParams(urlParams).get('filter') && <DetailedHeader />}
             <ul className="tags-container">
-
             </ul>
             <ul className="shop-items-container">
-                {items.map(item=>(
-                    <Item  tags={tags} cartHasItem={props.cartHasItem} key={item.id} {...props} item={item}/>
+                {items.map(item => (
+                    <Item cartHasItem={props.cartHasItem} key={item.id} {...props} item={item} />
                 ))}
             </ul>
             <footer>

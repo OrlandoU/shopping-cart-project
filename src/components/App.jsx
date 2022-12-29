@@ -1,6 +1,6 @@
 import '../assets/App.css';
 import '../assets/loader.css'
-import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
+import {  Routes, Route, NavLink, useNavigate } from 'react-router-dom';
 import Home from './home/Home'
 import About from './about/About'
 import Cart from './cart/Cart';
@@ -10,6 +10,7 @@ import { useState } from 'react';
 
 function App() {
   const [cart, setCart] = useState([])
+  const navigate = useNavigate()
 
   const addCartItem = (item) => {
     setCart(prevState=>{
@@ -31,17 +32,34 @@ function App() {
     }, false)
   }
 
+  const handleSearch = (e) => {
+    if(e.key && e.key !== 'Enter') return
+    let input = document.querySelector('.nav-search-input')
+    navigate(`/shop/q/${input.value}`)
+  }
+  const changeColor = () => {
+    let scroll = window.scrollY
+    if(!scroll) return
+    
+    if(scroll >= 100){
+      document.querySelector('.nav-bar').classList.add('show')
+      return
+    }
+    document.querySelector('.nav-bar').classList.remove('show')
+  }
+
+  window.addEventListener('scroll', changeColor)
 
   return (
-    <BrowserRouter>
+    <div>
       <nav className='nav-bar'>
         <NavLink to='/'>
-          <h3 className='main-header'>Shopping-cart</h3>
+          <h2 className='main-header'>React Zone</h2>
         </NavLink>
         <ul className='nav-links'>
-          <li className='search-bar-container'>
-            <input type="text" className='nav-search-input' />
-            <svg viewBox="0 0 24 24" className='search-icon'>
+          <li className='search-bar-container' onKeyDown={handleSearch}>
+            <input type="text" className='nav-search-input' placeholder='Games....'/>
+            <svg viewBox="0 0 24 24" className='search-icon' onClick={handleSearch}>
               <path fill="currentColor" d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
             </svg>
               <span></span>
@@ -81,13 +99,14 @@ function App() {
           <Route path='/about' element={<About />} />
           <Route path='/cart' element={<Cart items={cart} removeCartItem={removeCartItem} />} />
           <Route path='/shop/id/:idItem' element={<Item />} />
-          <Route path='/shop/:query?' element={<Shop cartHasItem={cartHasItem} addCartItem={addCartItem} key={document.location.href} />}  />
+          <Route path='/shop/q/:search?' element={<Shop cartHasItem={cartHasItem} addCartItem={addCartItem} key={document.location.href} />} />
+          <Route path='/shop/:filter?/:value?' element={<Shop cartHasItem={cartHasItem} addCartItem={addCartItem} key={document.location.href} />} />
         </Routes>
         
         
       </div>
       
-    </BrowserRouter>
+    </div>
   );
 }
 
