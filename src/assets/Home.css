@@ -5,45 +5,39 @@
 }
 
 .home-image-gallery {
-    width: 100%;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    overflow-x: hidden;
-    overflow-y: auto;
+    
 }
 
 .home-frames-container {
-    display: flex;
-    position: absolute;
-    z-index: 2;
-    transition: 1s;
+    background-color: #282c34;
+    
 }
 .home-frames-container::after{
     content: '';
     inset: 0;
     background-color: rgba(34, 34, 34, 0.278);
-    z-index: 1000;
+    z-index: 10;
+    
     position: absolute;
 }
 
 .home-frame {
-    width: 100vw;
-    max-height: 100vh;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: none;
     transition: 1s;
-    overflow: hidden;
 }
 .home-frame:not(.frame-active){
     filter: blur(4px) grayscale(.3);
 }
 .home-control-buttons{
     position: fixed;
-    bottom: 10px;
+    bottom: 20px;
     width: 100%;
     display: flex;
     justify-content: center;
-    z-index: 10;
+    z-index: 100;
     gap: 5px;
 }
 .in-home.nav-bar{
@@ -53,14 +47,35 @@
 }
 .home-control-buttons > * {
     background-color: rgba(255, 255, 255, 0.425);
-    width: 15px;
+    width: 12px;
     border-radius: 50%;
-    height: 15px;
+    height: 12px;
     color: transparent;
+    transition: 500ms;
+    user-select: none;
+}
+.home-control-buttons > *:hover{
+    cursor: pointer;
+    background-color: rgba(240, 248, 255, 0.62);
 }
 .frame-button{
     background-color: white;
+    transform: scale(1.1);
 }
-.frame-active{
-    filter: blur(0px);
+
+.frame-active {
+    display: block;
+    animation: fade-in-fwd 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+@keyframes fade-in-fwd {
+    0% {
+        transform: translateZ(-80px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateZ(0);
+        opacity: 1;
+    }
 }
