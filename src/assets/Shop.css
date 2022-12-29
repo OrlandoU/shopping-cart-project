@@ -1,48 +1,55 @@
-.shop-item-cover{
+.shop-item-cover {
     width: 100%;
     height: 100%;
     transition: 400ms ease-in;
     filter: grayscale(.4);
 }
-.shop-img-container{
+
+.shop-img-container {
     width: 100%;
     aspect-ratio: 16 / 9;
     overflow: hidden;
     position: relative;
 }
-.shop-img-container::after{
+
+.shop-img-container::after {
     content: '';
     position: absolute;
     inset: 0;
     box-shadow: inset 0px 0px 80px black;
     transition: 400ms;
 }
+
 .shop-item:hover .shop-img-container::after {
     box-shadow: inset 0px 0px 80px rgb(97, 97, 97);
 }
-.shop-items-container{
+
+.shop-items-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(500px,1fr));
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
     justify-content: center;
     gap: 20px;
-    align-items: center;
-    padding: 54px 26px;
-    max-width: 1100px;
-    margin: auto;
+    align-items: stretch;
+    padding: 0;
 }
-.shop-item:hover .shop-item-cover{
+
+.shop-item:hover .shop-item-cover {
     filter: grayscale(0);
     transform: scale(1.04);
 }
-.shop-item{
+
+.shop-item {
     display: flex;
+    height: 100%;
     flex-direction: column;
     justify-content: center;
-        align-items: center;
+    align-items: center;
     position: relative;
     background-color: white;
+    transition: 500ms;
 }
-.shop-item:hover{
+
+.shop-item:hover {
     box-shadow: 0px 0px 20px rgba(128, 128, 128, 0.514);
 }
 
@@ -65,16 +72,18 @@
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     transition: box-shadow 0.2s ease, background-color 150ms ease;
-    width: 90%;
-    padding: 0;
-    margin: 0px 20px 20px 20px
+    width: 100%;
 }
-.shop-item-button:active , .shop-item-button:hover{
+
+.shop-item-button:active,
+.shop-item-button:hover {
     background-color: #eee;
 }
-.shop-item:focus{
+
+.shop-item:focus {
     outline: none;
 }
+
 #cart {
     margin-right: 12px;
     transform-origin: 20% 100%;
@@ -155,12 +164,13 @@
     background-color: #20bf6b;
     transition-delay: 1150ms;
 }
-svg{
+
+svg {
     height: 24px;
     width: 24px;
 }
 
-.stars{
+.stars {
     position: absolute;
     width: 100px;
     bottom: 40px;
@@ -168,26 +178,33 @@ svg{
     z-index: 10;
     left: 10px;
 }
-.stars > *{
+
+.stars>* {
     position: absolute;
     overflow: hidden;
-        color: rgba(255, 255, 255, 0.384);
+    color: rgba(255, 255, 255, 0.384);
 }
-.shop-name-date-container{
+
+.shop-name-date-container {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    padding: 0px 25px;
+    flex: 1;
+    align-items: flex-end;
+    margin: 15px 0px;
 }
-.shop-item-date{
+
+.shop-item-date {
     color: gray;
+    font-size: 1.1rem;
 }
-.shop-item-name{
+
+.shop-item-name {
     font-size: 1.2rem;
     font-weight: 600;
-    text-shadow: 2px -2px 5px rgba(0, 0, 0, 0.37);
 }
-.shop-esrb{
+
+.shop-esrb {
     position: absolute;
     bottom: 10px;
     right: 10px;
@@ -201,16 +218,100 @@ svg{
     border-radius: 5px;
 }
 
-.shop-item-platforms{
-    padding: 15px 25px 0px 25px;
+.shop-item-platforms {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+    padding: 0;
 }
+
 .shop-item-platforms a {
     color: black;
-    box-shadow: 0px 0px 10px rgba(3, 3, 3, 0.507);
+    box-shadow: 0px 0px 4px 1px rgba(3, 3, 3, 0.507);
     padding: 4px 12px;
     font-weight: 600;
+    font-size: .7rem;
     border-radius: 50px;
+    transition: 200ms ease;
+}
+
+.shop-item-platforms a:hover {
+    background-color: gainsboro;
+}
+
+.shop-item-bottom {
+    padding: 10px 20px;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.shop-main-container {
+    padding: 54px 26px;
+    max-width: 1100px;
+    margin: auto;
+}
+
+.LazyLoad {
+    opacity: 0;
+    transition: 1s;
+    filter: blur(8px);
+    height: 100%;
+}
+
+.is-visible {
+    opacity: 1;
+    filter: blur(0px);
+}
+
+.shop-banner {
+    height: 320px;
+    background-size: 100% auto;
+    display: flex;
+    padding: 20px 20px;
+    position: relative;
+    align-items: flex-end;
+    box-shadow: inset 0px 0px 40px rgba(0, 0, 0, 0.534);
+}
+
+.shop-banner-name {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: rgb(255, 255, 255);
+    text-shadow: 4px -2px 10px rgba(0, 0, 0, 0.61);
+}
+
+.banner-back {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    position: absolute;
+}
+
+.shop-banner-description {
+    flex: 1;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(34, 34, 34, 0.301);
+    color: #eee;
+    padding: 10px;
+    backdrop-filter: blur(8px);
+}
+
+
+p {
+    margin: 0;
+}
+
+.shop-banner-count {
+    font-size: 1.5rem;
+    font-weight: 900;
+    background-color: rgb(255, 255, 255);
+    padding: 20px 20px;
+    border-radius: 5px;
 }
