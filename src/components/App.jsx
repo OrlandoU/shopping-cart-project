@@ -20,6 +20,7 @@ function App() {
 
   useEffect(()=>{
     saveItems()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cart])
 
   const saveItems = () => {
@@ -33,7 +34,7 @@ function App() {
 
   const getItems = () => {
     let data = JSON.parse(window.localStorage.getItem('shop-items'))
-    if(!data && !data.length) return
+    if(!data) return
     setCart(data)
   }
 
