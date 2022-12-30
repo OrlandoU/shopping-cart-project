@@ -4,9 +4,12 @@
     justify-content: center;
     align-items: center;
 }
+*{
+    font-family: 'Source Sans Pro', sans-serif;
+}
 
 .about-introduction{
-    width: 800px;
+    width: 900px;
 }
 .about-hero-container{
     display: flex;
@@ -18,7 +21,7 @@
     width: 100%;
     min-height: calc(100vh - 80px);
     background-image: url('../assets/cool-background.png');
-    background-size: 100% 100%;
+    background-size: 100vw 100vh;
     background-attachment: fixed;
 }
 
@@ -32,11 +35,13 @@
 .about-banner{
     width: 250px;
     font-size: 1.2rem;
-    background-color: rgba(34, 34, 34, 0.199);
+    background-image: linear-gradient(rgba(34, 34, 34, 0.199), transparent);
     backdrop-filter: blur(8px);
-    padding: 35px 25px;
+    padding: 55px 25px;
     border-radius: 5px;
     position: relative;
+    font-weight: 600;
+    font-style: italic;
     overflow: hidden;
     border-top: 2px rgba(238, 238, 238, 0.589) solid;
 }
@@ -67,5 +72,32 @@
 
 .nav-bar.in-about:not(.show) {
     background-image: url('../assets/cool-background.png');
-    background-size: 99vw;
+    background-size: 100vw 100vh;
+}
+.about-text-container{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 20px;
+    gap: 20px;
+}
+.about-text-container img{
+    width: 100%;
+}
+.thanks-message{
+    width: 100%;
+    text-align: center;
+    padding: 50px;
+    font-size: 1rem;
+    font-weight: 900;
+    font-style: italic;
+}
+.about-title{
+    font-size: 2.3rem;
+    background-image: url('../assets/cool-background.png');
+    background-size: 100vw;
+    background-clip: text;
+    text-align: center;
+    color: transparent;
+    background-attachment: fixed;
 }

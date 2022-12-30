@@ -6,11 +6,36 @@ import About from './about/About'
 import Cart from './cart/Cart';
 import Shop from './shop/Shop';
 import Item from './shop/DetailedItem/DetailedItem';
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import logo from '../assets/LOGO.png'
 
 function App() {
   const [cart, setCart] = useState([])
   const navigate = useNavigate()
+  const mounted = useRef()
+
+  useEffect(()=>{
+    getItems()
+  }, [])
+
+  useEffect(()=>{
+    saveItems()
+  }, [cart])
+
+  const saveItems = () => {
+    if(!mounted.current){
+      mounted.current = true
+    }
+    else{
+      window.localStorage.setItem('shop-items', JSON.stringify(cart))
+    }
+  }
+
+  const getItems = () => {
+    let data = JSON.parse(window.localStorage.getItem('shop-items'))
+    if(!data && !data.length) return
+    setCart(data)
+  }
 
   const addCartItem = (item) => {
     setCart(prevState=>{
@@ -19,9 +44,11 @@ function App() {
         item
       ]
     })
+    
   }
 
   const removeCartItem = (id) => {
+    
     setCart(prevState => prevState.filter(item => item.id !== id))
   }
 
@@ -54,7 +81,7 @@ function App() {
     <div>
       <nav className='nav-bar'>
         <NavLink to='/'>
-          <h2 className='main-header'>React Zone</h2>
+          <img src={logo} alt="" className='logo'/>
         </NavLink>
         <ul className='nav-links'>
           <li className='search-bar-container' onKeyDown={handleSearch}>
