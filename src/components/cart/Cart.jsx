@@ -8,34 +8,34 @@ export default function Cart(props) {
     const { removeCartItem, items } = props
 
     const increaseQuantity = (id) => {
-        setQuantity(prevState=>{
-            let copy = {...prevState}
+        setQuantity(prevState => {
+            let copy = { ...prevState }
             copy[id]++
             return copy
         })
     }
     const decreaseQuantity = (id) => {
         setQuantity(prevState => {
-            if(prevState[id] === 1) return prevState
+            if (prevState[id] === 1) return prevState
             let copy = { ...prevState }
             copy[id]--
             return copy
         })
     }
 
-    useEffect(()=>{
-        items.map(item=>{
-            setQuantity(prevState=>{return {...prevState, [item.id] : 1}})
+    useEffect(() => {
+        items.map(item => {
+            setQuantity(prevState => { return { ...prevState, [item.id]: 1 } })
             return item
         })
     }, [items])
 
-    
-    
+
+
 
     const getTotal = () => (
         items.reduce((prev, crr) => {
-            return prev + ((crr.metacritic || (+crr.score).toFixed(2))*quantity[crr.id])
+            return prev + ((crr.metacritic || (+crr.score).toFixed(2)) * quantity[crr.id])
         }, 0)
     )
 
@@ -64,44 +64,31 @@ export default function Cart(props) {
                     </div>
                 </div>
                 <div className="cart-order">
-                    <div className="cart-order-top bottom-border">
-                        <div>Order Summary</div>
+                    <div className="bottom-border cart-order-header">Order Summary</div>
+                    <div className="cart-items-count">
+                        <span>ITEMS  {items.length}</span>
+                        <span className="cart-items-total">{getTotal()}$</span>
                     </div>
 
-                    <div className="cart-order-middle bottom-border">
-                        <div className="cart-items-count">
-                            <span>ITEMS  {items.length}</span>
-                            <span className="cart-items-total">{getTotal()}$</span>
-                        </div>
+                    <label htmlFor="shipping">SHIPPING</label>
+                    <select name="select-value" id="shipping" onChange={handleShipping}>
+                        <option value="8">Standard Delivery - 8$</option>
+                        <option value="14">Expedited Delivery - 14$</option>
+                    </select>
 
-                        <div className="cart-item-shipping">
-                            <label htmlFor="shipping">SHIPPING</label>
-                            <select name="select-value" id="shipping" onChange={handleShipping}>
-                                <option value="8">Standard Delivery - 8$</option>
-                                <option value="14">Expedited Delivery - 14$</option>
-                            </select>
-                        </div>
+                    <label htmlFor="promo-code">PROMO CODE</label>
+                    <input type="text" id='promo-code' />
+                    <button className="cart-apply-code">APPLY</button>
 
-                        <div className="cart-item-promo">
-                            <label htmlFor="promo-code">PROMO CODE</label>
-                            <input type="text" id='promo-code'/>
-                            <button className="cart-apply-code">APPLY</button>
-                        </div>
-                    </div>
-
-                    <div className="cart-order-bottom">
-                        <span className="cart-order-total">
-                            <span>TOTAL COST</span>
-                            <span className="cart-order-total-amount">
+                    <span className="cart-order-total border-top">
+                        <span>TOTAL COST</span>
+                        <span className="cart-order-total-amount">
                             {getTotal() + shipping}$
-                            </span>
                         </span>
-                        <div className="cart-order-buttons">
-                            <button className="cart-order-checkout-button">CHECKOUT</button>
-                        </div>
-                    </div>
+                    </span>
+                    <button className="cart-order-checkout-button">CHECKOUT</button>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

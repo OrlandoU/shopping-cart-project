@@ -45,8 +45,8 @@ export default function Item(props) {
                         <Tag key={index} filter='platforms' id={platform.platform.id} text={platform.platform.name} />
                     ))}
                 </ul>
-                <Link to={`/shop/id/${item.id} `} className="shop-name-date-container">
-                    <div >
+                <Link to={`/shop/id/${item.id} `} className="shop-name-date-mcontainer">
+                    <div className="shop-name-date-container">
                         <div className="shop-item-name">{item.name}</div>
                         <div className="shop-item-date">{item.metacritic || (+item.score).toFixed(2)}$</div>
                     </div>

@@ -24,7 +24,7 @@ export default function Shop(props) {
     const queryGames = async () => {
         document.querySelector('.loading-screen').classList.add('visible')
         try {
-            let response = await fetch(`https://api.rawg.io/api/games?key=a1922842dfc24abb9c57b3377ecc5774&page_size=50&ordering=${direction + order}&page=${page}&${getUrl()}`)
+            let response = await fetch(`https://api.rawg.io/api/games?key=a1922842dfc24abb9c57b3377ecc5774&page_size=50&ordering=${direction + order}&page=${page}&${getUrl()}`, { mode: 'cors' })
             let data = await response.json()
             setItems(data.results)
         } catch (error) {
