@@ -1,7 +1,8 @@
 .App {
   text-align: center;
 }
-:root{
+#root{
+  min-height: 100vh;
       background-color: #eee;
 }
 .App-logo {
@@ -52,11 +53,14 @@
   font-weight: 600;
   position: sticky;
   top: 0;
-  transition: 1s;
+  transition: 400ms;
   z-index: 100;
 }
+#root{
+  backdrop-filter: blur(3px) grayscale(.5);   
+}
 .show{
-  background-color: #282c34e6;
+  background-color: #191923;
   backdrop-filter: blur(8px);
 }
 ul{
@@ -186,4 +190,8 @@ a{
 }
 .logo{
   height: 60px;
+}
+#root{
+  background-size: 100% 100%;
+  background-attachment: fixed;
 }

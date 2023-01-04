@@ -69,7 +69,7 @@ function App() {
     let scroll = window.scrollY
     if(!scroll) return
     
-    if(scroll >= 100){
+    if(scroll >= 150){
       document.querySelector('.nav-bar').classList.add('show')
       return
     }
@@ -79,7 +79,7 @@ function App() {
   window.addEventListener('scroll', changeColor)
 
   return (
-    <div>
+    <>
       <nav className='nav-bar'>
         <NavLink to='/'>
           <img src={logo} alt="" className='logo'/>
@@ -135,7 +135,7 @@ function App() {
         
       </div>
       
-    </div>
+    </>
   );
 }
 
