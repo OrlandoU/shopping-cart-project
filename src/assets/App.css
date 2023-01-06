@@ -1,9 +1,24 @@
 .App {
   text-align: center;
 }
+
+.main-container:not(.in-item){
+  z-index: 1;
+  background-color: white;
+}
 #root{
   min-height: 100vh;
-      background-color: #eee;
+  background-color: #eee;
+  display: flex;
+  flex-direction: column;
+}
+#root::after{
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  backdrop-filter: blur(2px);
+  background-color: #282c3493;
 }
 .App-logo {
   height: 40vmin;
@@ -194,4 +209,8 @@ a{
 #root{
   background-size: 100% 100%;
   background-attachment: fixed;
+}
+.main-container.in-item{
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0);
 }
