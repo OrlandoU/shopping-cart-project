@@ -577,3 +577,13 @@ section {
 .shop-item-platforms > strong{
     flex: 1;
 }
+
+.price-button-container{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.price-detail{
+    font-weight: 600;
+    font-size: 1.4rem;
+}

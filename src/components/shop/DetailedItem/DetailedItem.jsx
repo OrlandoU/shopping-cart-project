@@ -2,16 +2,16 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import Tag from "./Tag"
 import parse from 'html-react-parser'
-import { InView} from "react-intersection-observer"
+import { InView } from "react-intersection-observer"
 import Carrousel from "./carrousel"
 
-export default function DetailedItem() {
+export default function DetailedItem({cartHasItem, removeCartItem, addCartItem}) {
     const [item, setItem] = useState({})
     const [images, setImages] = useState({})
     const [loaded, setLoaded] = useState(false)
-    
+    const [checked, setChecked] = useState(false)
     const id = useParams().idItem
-    
+
 
     const fetchItem = async (id) => {
         document.querySelector('.loading-screen').classList.add('visible')
@@ -36,6 +36,18 @@ export default function DetailedItem() {
             throw error
         }
         return
+    }
+
+    const handleClick = () =>{
+        if(cartHasItem(item)){
+            console.log('done')
+            removeCartItem(item.id)
+            setChecked(false)
+        } else {
+            console.log()
+            addCartItem(item)
+            setChecked(true)
+        }
     }
 
     useEffect(() => {
@@ -75,18 +87,21 @@ export default function DetailedItem() {
                             <span className="additional-info-esrb">{item.esrb_rating.name}</span>
                         </div>
                         <div className="short-description">{item.description_raw.split('.')[0].length < 120 ? item.description_raw.split('.')[0] + '. ' + item.description_raw.split('.')[1] : item.description_raw.split('.')[0]}</div>
-                        <button className="hero-button">Add to Cart</button>
+                        <div className="price-button-container">
+                            <span className="price-detail">{item.metacritic.toFixed(2) || (+item.score).toFixed(2)}$</span>
+                            <button className="hero-button" onClick={handleClick}>{checked ? 'Remove from Cart' : 'Add to Cart'}</button>
+                        </div>
                     </div>
                 </InView>
                 <InView as='div' class='images-container' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
-                    <Carrousel items={images.results} id='image'/>
+                    <Carrousel items={images.results} id='image' />
                 </InView>
                 <InView as='section' class='game-info' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
                     <div className="shop-item-platforms"><strong>Developer:</strong> {item.developers.map(developer => <Tag filter='developers' id={developer.id} text={developer.name} />)}</div>
                     <div className="shop-item-platforms"><strong>Platforms:</strong> {item.platforms.map(platform => <Tag filter='platforms' id={platform.platform.id} text={platform.platform.name} />)}</div>
                     <div className="shop-item-platforms"><strong>Genres:</strong> {item.genres.map(genre => <Tag filter='genres' id={genre.id} text={genre.name} />)}</div>
                     <p><strong>Release Date:</strong> {item.released}</p>
-                    
+
                 </InView>
                 <InView as='section' class='reviews' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
                     <div className="section-header">Description</div>
@@ -98,7 +113,7 @@ export default function DetailedItem() {
                     <img src="screenshot2.jpg" alt="Screenshot 2" />
                     <img src="screenshot3.jpg" alt="Screenshot 3" />
                 </InView>
-                
+
                 <InView as='section' class='reviews' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
                     <h3>Reviews</h3>
                     <p><strong>Critic Review 1:</strong> "Game Title is a must-play for fans of the genre. The gameplay is smooth and the story is captivating."</p>
