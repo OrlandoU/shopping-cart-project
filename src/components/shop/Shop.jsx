@@ -31,7 +31,6 @@ export default function Shop(props) {
             throw error
         }
         document.querySelector('.loading-screen').classList.remove('visible')
-
     }
 
     const handlePrevious = () => {

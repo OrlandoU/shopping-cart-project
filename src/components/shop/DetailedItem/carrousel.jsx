@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 
 export default function Carrousel({items, id, src}){
     const [offset, setOffset] = useState(1)
 
     useEffect(()=>{
+        console.log((offset * - getWidths()[1]) + ((getWidths()[0] - getWidths()[1]) / 2))
         document.querySelector('.carrousel-items').style.left = `${((offset * - getWidths()[1]) + ((getWidths()[0] - getWidths()[1]) / 2))}px`
         const allImages = document.querySelectorAll('.carrousel-item')
         allImages.forEach(image => image.classList.remove('carrousel-main-item'))
@@ -11,6 +12,7 @@ export default function Carrousel({items, id, src}){
     })
 
     useEffect(() => {
+        console.log((offset * - getWidths()[1]) + ((getWidths()[0] - getWidths()[1]) / 2))
         document.querySelector('.carrousel-items').style.left = `${((offset * - getWidths()[1]) + ((getWidths()[0] - getWidths()[1]) / 2))}px`
         const allImages = document.querySelectorAll('.carrousel-item')
         allImages.forEach(image => image.classList.remove('carrousel-main-item'))
