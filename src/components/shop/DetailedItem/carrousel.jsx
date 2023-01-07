@@ -1,20 +1,32 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect} from "react"
 
-export default function Carrousel({items, id, src}){
-    const [offset, setOffset] = useState(1)
+export default function Carrousel({items, id}){
+    const [offset, setOffset] = useState(items.length > 2 ? 1 : 0)
+
+
+    const updateCarrousel = () => {
+        document.querySelector(`#${id} .carrousel-items`).style.left = `${((offset * - getWidths()[1]) + ((getWidths()[0] - getWidths()[1]) / 2))}px`
+        const allImages = document.querySelectorAll(`#${id} .carrousel-item`)
+        allImages.forEach(image => {
+            image.classList.remove('carrousel-main-item')
+            if (!image.paused && id === 'video') {
+                image.pause()
+            }
+        })
+        document.getElementById(`${offset + id}`).classList.add('carrousel-main-item')
+        if (id === 'video') document.getElementById(`${offset + id}`).play()
+    }
 
     useEffect(()=>{
-        document.querySelector('.carrousel-items').style.left = `${((offset * - getWidths()[1]) + ((getWidths()[0] - getWidths()[1]) / 2))}px`
-        const allImages = document.querySelectorAll('.carrousel-item')
-        allImages.forEach(image => image.classList.remove('carrousel-main-item'))
-        document.getElementById(`${offset}`).classList.add('carrousel-main-item')
+        updateCarrousel()
+        let timer = setTimeout(updateCarrousel, 100)
+
+        return ()=>clearTimeout(timer)
     })
 
     useEffect(() => {
-        document.querySelector('.carrousel-items').style.left = `${((offset * - getWidths()[1]) + ((getWidths()[0] - getWidths()[1]) / 2))}px`
-        const allImages = document.querySelectorAll('.carrousel-item')
-        allImages.forEach(image => image.classList.remove('carrousel-main-item'))
-        document.getElementById(`${offset}`).classList.add('carrousel-main-item')
+        updateCarrousel()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [offset])
 
     const handleLeftClick = () => {
@@ -28,7 +40,7 @@ export default function Carrousel({items, id, src}){
 
     const getWidths = () =>{
         const parentElement = document.getElementById(id)
-        const childElement = document.querySelector(`#${id}>.carrousel-items>img`)
+        const childElement = document.querySelector(`#${id}>.carrousel-items>${id === 'video' ? 'video': 'img'}`)
         return [parentElement.offsetWidth, childElement.offsetWidth]
     }
 
@@ -56,9 +68,13 @@ export default function Carrousel({items, id, src}){
                     </svg>
                 </span>}
             <div className="carrousel-items">
-                {items.map((element, index) => (
-                    <img className="carrousel-item" id={index} src={element[id]} alt="" srcset="" />
-                ))}
+                { id === 'image' 
+                ? items.map((element, index) => <img className="carrousel-item" id={index + id} src={element[id]} alt="" srcset="" />) 
+                : items.map((element, index) => 
+                <video className="carrousel-item" id={index + id} controls poster={element.preview}>
+                    <source src={element.data.max}  type="video/mp4"/>
+                </video>)
+                }
             </div>
     </div>
     )

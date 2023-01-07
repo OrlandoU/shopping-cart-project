@@ -1,13 +1,16 @@
-import { useEffect, useRef, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { Link, useLocation, useParams } from "react-router-dom"
 import Tag from "./Tag"
 import parse from 'html-react-parser'
 import { InView } from "react-intersection-observer"
 import Carrousel from "./carrousel"
 
-export default function DetailedItem({cartHasItem, removeCartItem, addCartItem}) {
+export default function DetailedItem({ cartHasItem, removeCartItem, addCartItem }) {
     const [item, setItem] = useState({})
     const [images, setImages] = useState({})
+    const [videos, setVideos] = useState({})
+    const [games, setGames] = useState({})
+    const [posts, setPosts] = useState({})
     const [loaded, setLoaded] = useState(false)
     const [checked, setChecked] = useState(false)
     const id = useParams().idItem
@@ -26,11 +29,23 @@ export default function DetailedItem({cartHasItem, removeCartItem, addCartItem})
         return
     }
 
+    const fetchPosts = async (id) => {
+        document.querySelector('.loading-screen').classList.add('visible')
+        try {
+            let response = await fetch(`https://api.rawg.io/api/games/${id}/reddit?key=a1922842dfc24abb9c57b3377ecc5774`, { mode: 'cors' })
+            let data = await response.json()
+            console.log(data)
+            setPosts(data)
+        } catch (error) {
+            throw error
+        }
+        return
+    }
+
     const fetchImgs = async (id) => {
         try {
             let response = await fetch(`https://api.rawg.io/api/games/${id}/screenshots?key=a1922842dfc24abb9c57b3377ecc5774`, { mode: 'cors' })
             let data = await response.json()
-            console.log(data)
             setImages(data)
         } catch (error) {
             throw error
@@ -38,8 +53,30 @@ export default function DetailedItem({cartHasItem, removeCartItem, addCartItem})
         return
     }
 
-    const handleClick = () =>{
-        if(cartHasItem(item)){
+    const fetchVideos = async (id) => {
+        try {
+            let response = await fetch(`https://api.rawg.io/api/games/${id}/movies?key=a1922842dfc24abb9c57b3377ecc5774`, { mode: 'cors' })
+            let data = await response.json()
+            setVideos(data)
+        } catch (error) {
+            throw error
+        }
+        return
+    }
+
+    const fetchGames = async (id) => {
+        try {
+            let response = await fetch(`https://api.rawg.io/api/games/${id}/game-series?key=a1922842dfc24abb9c57b3377ecc5774`, { mode: 'cors' })
+            let data = await response.json()
+            setGames(data)
+        } catch (error) {
+            throw error
+        }
+        return
+    }
+
+    const handleClick = () => {
+        if (cartHasItem(item)) {
             console.log('done')
             removeCartItem(item.id)
             setChecked(false)
@@ -53,7 +90,7 @@ export default function DetailedItem({cartHasItem, removeCartItem, addCartItem})
     useEffect(() => {
         document.querySelector('.main-container').classList.add('in-item')
         document.querySelector('.nav-bar').classList.add('in-item')
-        Promise.all([fetchImgs(id), fetchItem(id)]).then(() => {
+        Promise.all([fetchImgs(id), fetchItem(id), fetchVideos(id), fetchGames(id), fetchPosts(id)]).then(() => {
             setLoaded(true)
             document.querySelector('.loading-screen').classList.remove('visible')
         })
@@ -64,7 +101,7 @@ export default function DetailedItem({cartHasItem, removeCartItem, addCartItem})
             document.querySelector('.nav-bar').classList.remove('in-item')
             document.querySelector('.nav-bar').classList.remove('show')
         }
-    }, [])
+    }, [useLocation()])
 
 
 
@@ -83,44 +120,70 @@ export default function DetailedItem({cartHasItem, removeCartItem, addCartItem})
                                 <svg style={{ width: '24px', height: '24px' }} viewBox="0 0 24 24">
                                     <path fill="orange" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" />
                                 </svg></span>
-                            <span className="additional-info-meta">{item.released.split('-')[0]}</span>
-                            <span className="additional-info-esrb">{item.esrb_rating.name}</span>
+                            {item.released && <span className="additional-info-meta">{item.released.split('-')[0]}</span>}
+                            <span className="additional-info-esrb">{item.esrb_rating ? item.esrb_rating.name : 'Everyone'}</span>
                         </div>
                         <div className="short-description">{item.description_raw.split('.')[0].length < 120 ? item.description_raw.split('.')[0] + '. ' + item.description_raw.split('.')[1] : item.description_raw.split('.')[0]}</div>
                         <div className="price-button-container">
-                            <span className="price-detail">{item.metacritic.toFixed(2) || (+item.score).toFixed(2)}$</span>
+                            <span className="price-detail">{(item.metacritic ? item.metacritic.toFixed(2) : null) || (+item.score).toFixed(2)}$</span>
                             <button className="hero-button" onClick={handleClick}>{checked ? 'Remove from Cart' : 'Add to Cart'}</button>
                         </div>
                     </div>
                 </InView>
-                <InView as='div' class='images-container' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
-                    <Carrousel items={images.results} id='image' />
-                </InView>
-                <InView as='section' class='game-info' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
-                    <div className="shop-item-platforms"><strong>Developer:</strong> {item.developers.map(developer => <Tag filter='developers' id={developer.id} text={developer.name} />)}</div>
-                    <div className="shop-item-platforms"><strong>Platforms:</strong> {item.platforms.map(platform => <Tag filter='platforms' id={platform.platform.id} text={platform.platform.name} />)}</div>
-                    <div className="shop-item-platforms"><strong>Genres:</strong> {item.genres.map(genre => <Tag filter='genres' id={genre.id} text={genre.name} />)}</div>
-                    <p><strong>Release Date:</strong> {item.released}</p>
+                {videos.results.length ? <InView as='div' class='video-container' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
+                    <Carrousel items={videos.results} id='video' />
+                </InView> : null}
 
-                </InView>
-                <InView as='section' class='reviews' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
+                <InView as='section' class='description' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
                     <div className="section-header">Description</div>
                     {parse(item.description)}
                 </InView>
-                <InView as='section' class='screenshots' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
-                    <h3>Screenshots</h3>
-                    <img src="screenshot1.jpg" alt="Screenshot 1" />
-                    <img src="screenshot2.jpg" alt="Screenshot 2" />
-                    <img src="screenshot3.jpg" alt="Screenshot 3" />
+                <InView as='section' class='game-info' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
+                    <div className="shop-item-platforms"><strong className="section-header">Developers</strong> {item.developers.map(developer => <Tag filter='developers' id={developer.id} text={developer.name} />)}</div>
+                    <div className="shop-item-platforms"><strong className="section-header">Publishers</strong> {item.publishers.map(publisher => <Tag filter='publishers' id={publisher.id} text={publisher.name} />)}</div>
+                    <div className="shop-item-platforms"><strong className="section-header">Platforms</strong> {item.platforms.map(platform => <Tag filter='platforms' id={platform.platform.id} text={platform.platform.name} />)}</div>
+                    <div className="shop-item-platforms"><strong className="section-header">Genres</strong> {item.genres.map(genre => <Tag filter='genres' id={genre.id} text={genre.name} />)}</div>
                 </InView>
 
-                <InView as='section' class='reviews' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
-                    <h3>Reviews</h3>
-                    <p><strong>Critic Review 1:</strong> "Game Title is a must-play for fans of the genre. The gameplay is smooth and the story is captivating."</p>
-                    <p><strong>Critic Review 2:</strong> "Game Title delivers on all fronts. The graphics are stunning and the characters are well-developed."</p>
-                    <p><strong>User Review 1:</strong> "I couldn't put this game down! The controls were intuitive and the story kept me hooked."</p>
-                    <p><strong>Overall Rating:</strong> 4.5/5</p>
+                <InView as='section' class='external-links' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
+                    <a href={item.website} className='official-website'>Official Website</a>
+                    {item.reddit_url &&<a href={item.reddit_url} className='reddit-website'>{item.reddit_name}</a>}
                 </InView>
+
+                {images.results.length && <InView as='div' class='images-container' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
+                    <Carrousel items={images.results} id='image' />
+                </InView>}
+
+                
+
+                <InView as='section' class='more-games' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
+                    <h3 className="section-header">More from the same Series</h3>
+                    <div className="games-container">
+                        {games.results.map(game => (
+                            <Link className="game-series" to={`/shop/id/${game.id}`}>
+                                <span className="game-name">{game.name}</span>
+                                <img src={game.background_image} alt="Game same franchise" />
+                            </Link>
+                        ))}
+                    </div>
+                </InView>
+
+                {posts.results.length ?<InView as='section' class='reddit' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
+                    <h3 className="section-header">Recent reddit posts</h3>
+                    {posts.results.map(post => (
+                        <a className="post" href={post.url}>
+                            <div className="post-left">
+                                <div className="post-header section-header">
+                                    <span>{post.username}</span>
+                                    <span>{post.created}</span>
+                                </div>
+                                <h6 className="post-header">{post.name}</h6>
+                                {parse(post.text)}
+                            </div>
+                            {post.image && <img className="post-image" src={post.image} alt="Reddit post image" />}
+                        </a>
+                    ))}
+                </InView> : null}
             </div>
         )
     }

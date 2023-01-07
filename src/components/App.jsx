@@ -128,7 +128,7 @@ function App() {
           <Route path='/shopping-cart-project' element={<Home />} />
           <Route path='/about' element={<About />} />
           <Route path='/cart' element={<Cart items={cart} removeCartItem={removeCartItem} />} />
-          <Route path='/shop/id/:idItem' element={<Item cartHasItem={cartHasItem} removeCartItem={removeCartItem} addCartItem={addCartItem}/>} />
+          <Route path='/shop/id/:idItem' element={<Item cartHasItem={cartHasItem} removeCartItem={removeCartItem} addCartItem={addCartItem} key={document.location.href} />} />
           <Route path='/shop/q/:search?' element={<Shop cartHasItem={cartHasItem} addCartItem={addCartItem} key={document.location.href} />} />
           <Route path='/shop/:filter?/:value?' element={<Shop cartHasItem={cartHasItem} addCartItem={addCartItem} key={document.location.href} />} />
         </Routes>
