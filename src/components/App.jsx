@@ -114,7 +114,7 @@ function App() {
       </nav>
       <div className="main-container">
         <div className="loading-screen">
-          <div class="wrapper">
+          <div class="wrappe">
             <div class="circle"></div>
             <div class="circle"></div>
             <div class="circle"></div>
