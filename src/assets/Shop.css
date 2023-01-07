@@ -424,8 +424,7 @@ p {
 section {
     width: clamp(600px, 55vw, 1500px);
     padding: 30px 40px;
-    border-radius: 15px;
-    background-color: white;
+    border-radius: 10px;
     opacity: 0;
     transform: translateY(60px);
     transition: 1s;
@@ -449,15 +448,19 @@ section {
     color: white;
     flex-direction: row;
 }
-.left-side::after{
+
+.left-side::after {
     content: '';
     position: absolute;
     inset: 0;
     background-image: linear-gradient(rgba(0, 0, 0, 0.377), transparent);
 }
+
 .left-side {
     flex: 2 1 500px;
     position: relative;
+    border-radius: 15px;
+    overflow: hidden;
 }
 
 .game-cover {
@@ -545,7 +548,7 @@ section {
     padding: 10px;
     display: flex;
     align-items: center;
-    background-color: #0f0f0fa2;
+    background-color: #0f0f0f;
     transition: 300ms;
 }
 
@@ -556,34 +559,189 @@ section {
 }
 
 .left-image {
-    box-shadow: 20px 0px 10px #0f0f0fb3;
+    box-shadow: 20px 0px 10px #0f0f0f;
 }
 
 .right-image {
     right: 0;
-    box-shadow: -20px 0px 10px #0f0f0fb3;
+    box-shadow: -20px 0px 10px #0f0f0f;
 }
 
-.sectionVisible{
+.sectionVisible {
     opacity: 1;
     transform: translateY(0);
 }
-.section-header{
-    font-size: 1.1rem;
+
+.section-header {
+    font-size: 1.3rem;
     font-weight: 900;
     padding: 10px 0px;
     border-bottom: 2px solid #282c34c5;
 }
-.shop-item-platforms > strong{
-    flex: 1;
+
+.shop-item-platforms>strong {
+    flex: 1 0 100%;
 }
 
-.price-button-container{
+.price-button-container {
     display: flex;
     justify-content: space-around;
     align-items: center;
 }
-.price-detail{
+
+.price-detail {
     font-weight: 600;
     font-size: 1.4rem;
+}
+
+.description,
+.game-info,
+.reddit {
+    background-color: transparent;
+    color: rgb(228, 228, 228);
+    font-size: 1.1rem;
+}
+
+.more-games {
+    background-color: transparent;
+    color: rgb(233, 233, 233);
+    width: clamp(600px, 65vw, 1500px);
+}
+
+.games-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.game-series {
+    border-radius: 5px;
+    overflow: hidden;
+    width: 250px;
+    aspect-ratio: 16 / 9;
+    position: relative;
+    flex: 1 1 320px;
+}
+
+.game-name {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    font-weight: 600;
+    width: 100%;
+    font-size: 1.3rem;
+    padding: 20px;
+    height: 100%;
+    backdrop-filter: blur(1px);
+    background-color: #282c3448;
+    color: white;
+    transition: 400ms;
+    text-shadow: 0px 0px 5px #0f0f0f;
+    user-select: none;
+}
+
+.game-name:hover {
+    background-color: transparent;
+    backdrop-filter: blur(0px);
+}
+
+.game-series>img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.game-info {
+    font-size: 1.1rem;
+    border: 1px solid gainsboro;
+    gap: 25px;
+    padding: 40px;
+}
+
+.game-info a {
+    box-shadow: 0px 0px 7px 1px rgb(102 102 102 / 15%);
+    color: rgb(231, 231, 231);
+    font-size: .8rem;
+}
+
+.game-info a:hover {
+    color: #0f0f0f;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+}
+
+.post-left {
+    flex: 1;
+}
+
+.post {
+    gap: 50px;
+    color: #282c34;
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    font-size: .9rem;
+    transition: 400ms;
+}
+
+.post-image {
+    border-radius: 10px;
+    width: clamp(100px, 20vw, 200px);
+    aspect-ratio: 16/9;
+}
+
+.post h6 {
+    font-size: .9rem;
+    margin: 10px 0px;
+}
+
+.post:hover {
+    transform: translateX(-10px);
+    background-color: #fbfef9d0;
+}
+
+.external-links {
+    flex-direction: row;
+    font-weight: 600;
+    letter-spacing: .5px;
+    justify-content: center;
+}
+
+.official-website {
+    padding: 10px 30px;
+    color: #FBFEF9;
+    border: 2px solid white;
+    transition: 400ms;
+    border-radius: 5px;
+}
+
+.reddit-website {
+    padding: 10px 30px;
+    background-color: rgb(255, 255, 255);
+    color: #282c34;
+    border: 2px solid white;
+    border-radius: 5px;
+    transition: 400ms;
+}
+
+.reddit-website:hover {
+    background-color: orangered;
+    color: #ffffff;
+    border: 2px solid orangered;
+}
+
+.official-website:hover {
+    background-color: rgb(255, 255, 255);
+    color: #282c34;
+    border: 2px solid white;
 }
