@@ -19,13 +19,14 @@ export default function Carrousel({items, id}){
 
     useEffect(()=>{
         updateCarrousel()
-        window.addEventListener('scroll', updateCarrousel)
+        let timer = setTimeout(updateCarrousel, 100)
 
-        return ()=>window.removeEventListener('scroll', updateCarrousel)
+        return ()=>clearTimeout(timer)
     })
 
     useEffect(() => {
         updateCarrousel()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [offset])
 
     const handleLeftClick = () => {

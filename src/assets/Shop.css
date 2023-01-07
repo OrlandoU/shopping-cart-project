@@ -732,6 +732,10 @@ section {
     border: 2px solid white;
     border-radius: 5px;
     transition: 400ms;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 10px;
 }
 
 .reddit-website:hover {
@@ -744,4 +748,7 @@ section {
     background-color: rgb(255, 255, 255);
     color: #282c34;
     border: 2px solid white;
+}
+.reddit-logo{
+    height: 25px;
 }

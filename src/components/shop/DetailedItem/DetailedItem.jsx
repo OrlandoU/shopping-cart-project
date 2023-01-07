@@ -147,7 +147,7 @@ export default function DetailedItem({ cartHasItem, removeCartItem, addCartItem 
 
                 <InView as='section' class='external-links' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
                     <a href={item.website} className='official-website'>Official Website</a>
-                    <a href={item.reddit_url} className='reddit-website'>{item.reddit_name}</a>
+                    {item.reddit_url &&<a href={item.reddit_url} className='reddit-website'>{item.reddit_name}</a>}
                 </InView>
 
                 {images.results.length && <InView as='div' class='images-container' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
@@ -168,7 +168,7 @@ export default function DetailedItem({ cartHasItem, removeCartItem, addCartItem 
                     </div>
                 </InView>
 
-                <InView as='section' class='reddit' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
+                {posts.results.length ?<InView as='section' class='reddit' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
                     <h3 className="section-header">Recent reddit posts</h3>
                     {posts.results.map(post => (
                         <a className="post" href={post.url}>
@@ -183,7 +183,7 @@ export default function DetailedItem({ cartHasItem, removeCartItem, addCartItem 
                             {post.image && <img className="post-image" src={post.image} alt="Reddit post image" />}
                         </a>
                     ))}
-                </InView>
+                </InView> : null}
             </div>
         )
     }
