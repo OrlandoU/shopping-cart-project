@@ -11,12 +11,25 @@ import logo from '../assets/LOGO.png'
 
 function App() {
   const [cart, setCart] = useState([])
+  const [menuExpanded, setMenuExpanded] = useState(false)
   const navigate = useNavigate()
   const mounted = useRef()
 
   useEffect(()=>{
     getItems()
   }, [])
+
+  const expandMenu = (e) => {
+    e.stopPropagation()
+    setMenuExpanded(true)
+    document.body.classList.add('body-fixed')
+  }
+
+  const retrieveMenu = (e) => {
+    e.stopPropagation()
+    setMenuExpanded(false)
+    document.body.classList.remove('body-fixed')
+  }
 
   useEffect(()=>{
     saveItems()
@@ -64,8 +77,10 @@ function App() {
   const handleSearch = (e) => {
     if(e.key && e.key !== 'Enter') return
     let input = document.querySelector('.nav-search-input')
+    retrieveMenu(e)
     navigate(`/shop/q/${input.value}`)
   }
+
   const changeColor = () => {
     let scroll = window.scrollY
     if(!scroll) return
@@ -81,13 +96,19 @@ function App() {
 
   return (
     <>
+      {menuExpanded && <div className="blurred-background"></div>}
       <nav className='nav-bar'>
         <NavLink to='/'>
           <img src={logo} alt="" className='logo'/>
         </NavLink>
-        <ul className='nav-links'>
-          <li className='search-bar-container' onKeyDown={handleSearch}>
-            <input type="text" className='nav-search-input' placeholder='Games....'/>
+          <svg style={{width:"24px",height:"24px"}} onClick={expandMenu} className={menuExpanded ? 'main-menu menu-expanded' : 'main-menu'} viewBox="0 0 24 24">
+            <path fill="currentColor" d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
+          </svg>
+        
+        <ul className='nav-links' onClick={retrieveMenu}>
+          {menuExpanded && <h1>ReactZ</h1>}
+          <li className='search-bar-container' onKeyDown={handleSearch} >
+            <input type="text" className='nav-search-input' onClick={(e) => e.stopPropagation()} placeholder='Games....'/>
             <svg viewBox="0 0 24 24" className='search-icon' onClick={handleSearch}>
               <path fill="currentColor" d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
             </svg>
@@ -114,7 +135,7 @@ function App() {
       </nav>
       <div className="main-container">
         <div className="loading-screen">
-          <div class="wrappe">
+          <div class="wrapper">
             <div class="circle"></div>
             <div class="circle"></div>
             <div class="circle"></div>

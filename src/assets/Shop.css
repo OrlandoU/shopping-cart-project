@@ -173,11 +173,13 @@ svg {
 
 .stars {
     position: absolute;
-    height: 200px;
-    bottom: 40px;
+    width: 200px;
+    bottom: 10px;
     font-size: 1.5rem;
     z-index: 10;
+    height: 30px;
     left: 10px;
+    transform: scale(0.9);
 }
 
 .stars>* {
@@ -415,6 +417,9 @@ p {
 }
 
 .item-additional-info>* {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 2px 0px;
     background-color: #0f0f0f;
     flex: 1 0 auto;
@@ -506,7 +511,7 @@ section {
 
 .carrousel-container {
     overflow-x: hidden;
-    width: clamp(500px, 70vw, 1500px);
+    width: clamp(300px, 90vw, 1500px);
     aspect-ratio: 16/8;
     position: relative;
     display: flex;
@@ -524,7 +529,7 @@ section {
 }
 
 .carrousel-item {
-    width: clamp(300px, 50vw, 600px);
+    width: clamp(200px, 50vw, 600px);
     transition: 400ms;
     filter: opacity(0.3);
     z-index: 1;
@@ -539,6 +544,7 @@ section {
 }
 
 .carrousel-container span {
+    top: 0;
     position: absolute;
     height: 100%;
     font-weight: 900;
@@ -559,11 +565,12 @@ section {
 }
 
 .left-image {
+    left: -15px;
     box-shadow: 20px 0px 10px #0f0f0f;
 }
 
 .right-image {
-    right: 0;
+    right: -15px;
     box-shadow: -20px 0px 10px #0f0f0f;
 }
 
@@ -686,6 +693,7 @@ section {
     gap: 50px;
     color: #282c34;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     background-color: white;
     padding: 20px 30px;

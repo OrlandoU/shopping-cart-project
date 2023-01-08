@@ -1,17 +1,13 @@
 import { useEffect, useState } from "react"
-import { Link, useLocation, useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import Tag from "./Tag"
 import parse from 'html-react-parser'
 import { InView } from "react-intersection-observer"
 import Carrousel from "./carrousel"
 
 export default function DetailedItem({ cartHasItem, removeCartItem, addCartItem }) {
-    const [item, setItem] = useState({})
-    const [images, setImages] = useState({})
-    const [videos, setVideos] = useState({})
-    const [games, setGames] = useState({})
-    const [posts, setPosts] = useState({})
-    const [loaded, setLoaded] = useState(false)
+    const [values, setValues] = useState([])
+    const [images, item, videos, games, posts] = values
     const [checked, setChecked] = useState(false)
     const id = useParams().idItem
 
@@ -21,12 +17,10 @@ export default function DetailedItem({ cartHasItem, removeCartItem, addCartItem 
         try {
             let response = await fetch(`https://api.rawg.io/api/games/${id}?key=a1922842dfc24abb9c57b3377ecc5774`, { mode: 'cors' })
             let data = await response.json()
-            console.log(data)
-            setItem(data)
+            return data
         } catch (error) {
             throw error
         }
-        return
     }
 
     const fetchPosts = async (id) => {
@@ -34,45 +28,40 @@ export default function DetailedItem({ cartHasItem, removeCartItem, addCartItem 
         try {
             let response = await fetch(`https://api.rawg.io/api/games/${id}/reddit?key=a1922842dfc24abb9c57b3377ecc5774`, { mode: 'cors' })
             let data = await response.json()
-            console.log(data)
-            setPosts(data)
+            return data
         } catch (error) {
             throw error
         }
-        return
     }
 
     const fetchImgs = async (id) => {
         try {
             let response = await fetch(`https://api.rawg.io/api/games/${id}/screenshots?key=a1922842dfc24abb9c57b3377ecc5774`, { mode: 'cors' })
             let data = await response.json()
-            setImages(data)
+            return data
         } catch (error) {
             throw error
         }
-        return
     }
 
     const fetchVideos = async (id) => {
         try {
             let response = await fetch(`https://api.rawg.io/api/games/${id}/movies?key=a1922842dfc24abb9c57b3377ecc5774`, { mode: 'cors' })
             let data = await response.json()
-            setVideos(data)
+            return data
         } catch (error) {
             throw error
         }
-        return
     }
 
     const fetchGames = async (id) => {
         try {
             let response = await fetch(`https://api.rawg.io/api/games/${id}/game-series?key=a1922842dfc24abb9c57b3377ecc5774`, { mode: 'cors' })
             let data = await response.json()
-            setGames(data)
+            return data
         } catch (error) {
             throw error
         }
-        return
     }
 
     const handleClick = () => {
@@ -90,8 +79,8 @@ export default function DetailedItem({ cartHasItem, removeCartItem, addCartItem 
     useEffect(() => {
         document.querySelector('.main-container').classList.add('in-item')
         document.querySelector('.nav-bar').classList.add('in-item')
-        Promise.all([fetchImgs(id), fetchItem(id), fetchVideos(id), fetchGames(id), fetchPosts(id)]).then(() => {
-            setLoaded(true)
+        Promise.all([fetchImgs(id), fetchItem(id), fetchVideos(id), fetchGames(id), fetchPosts(id)]).then((values) => {
+            setValues(values)
             document.querySelector('.loading-screen').classList.remove('visible')
         })
 
@@ -101,11 +90,11 @@ export default function DetailedItem({ cartHasItem, removeCartItem, addCartItem 
             document.querySelector('.nav-bar').classList.remove('in-item')
             document.querySelector('.nav-bar').classList.remove('show')
         }
-    }, [useLocation()])
+    }, [id])
 
 
 
-    if (loaded) {
+    if (values.length) {
         document.getElementById('root').style.backgroundImage = `url(${item.background_image})`
         return (
             <div style={{ backgroundColor: `#${item.dominant_color}`, boxShadow: `0px -40px 40px 40px #${item.dominant_color}` }} className="detailedItem">

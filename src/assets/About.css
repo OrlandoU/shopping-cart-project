@@ -61,10 +61,11 @@
 .features-ul{
     display: flex;
     gap: 20px;
+    flex-wrap: wrap;
 }
 .features-ul > *{
     font-weight: 600;
-    flex: 1;
+    flex: 1 ;
     display: flex;
     align-items: center;
     justify-content: center;
