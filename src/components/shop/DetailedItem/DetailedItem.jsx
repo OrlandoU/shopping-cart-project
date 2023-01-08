@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
+import LazyLoad from "react-lazy-load"
 import Tag from "./Tag"
 import parse from 'html-react-parser'
 import { InView } from "react-intersection-observer"
@@ -100,7 +101,9 @@ export default function DetailedItem({ cartHasItem, removeCartItem, addCartItem 
             <div style={{ backgroundColor: `#${item.dominant_color}`, boxShadow: `0px -40px 40px 40px #${item.dominant_color}` }} className="detailedItem">
                 <InView as='section' class='hover-info' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
                     <div className="left-side">
-                        <img src={item.background_image} className='game-cover' alt="item cover" />
+                        <LazyLoad offset={300}>
+                            <img src={item.background_image} className='game-cover' alt="item cover" />
+                        </LazyLoad>
                     </div>
                     <div className="right-side">
                         <div className="item-header">{item.name}</div >
@@ -136,44 +139,53 @@ export default function DetailedItem({ cartHasItem, removeCartItem, addCartItem 
 
                 <InView as='section' class='external-links' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
                     <a href={item.website} className='official-website'>Official Website</a>
-                    {item.reddit_url &&<a href={item.reddit_url} className='reddit-website'>{item.reddit_name}</a>}
+                    {item.reddit_url && <a href={item.reddit_url} className='reddit-website'>{item.reddit_name}</a>}
                 </InView>
 
                 {images.results.length && <InView as='div' class='images-container' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
                     <Carrousel items={images.results} id='image' />
                 </InView>}
 
-                
+
 
                 <InView as='section' class='more-games' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
                     <h3 className="section-header">More from the same Series</h3>
-                    <div className="games-container">
-                        {games.results.map(game => (
-                            <Link className="game-series" to={`/shop/id/${game.id}`}>
-                                <span className="game-name">{game.name}</span>
-                                <img src={game.background_image} alt="Game same franchise" />
-                            </Link>
-                        ))}
-                    </div>
-                </InView>
+                    <LazyLoad offset={300}>
+                        <div className="games-container">
+                            {games.results.map(game => (
+                                <Link className="game-series" to={`/shop/id/${game.id}`}>
+                                    <span className="game-name">{game.name}</span>
 
-                {posts.results.length ?<InView as='section' class='reddit' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
-                    <h3 className="section-header">Recent reddit posts</h3>
-                    {posts.results.map(post => (
-                        <a className="post" href={post.url}>
-                            <div className="post-left">
-                                <div className="post-header section-header">
-                                    <span>{post.username}</span>
-                                    <span>{post.created}</span>
-                                </div>
-                                <h6 className="post-header">{post.name}</h6>
-                                {parse(post.text)}
-                            </div>
-                            {post.image && <img className="post-image" src={post.image} alt="Reddit post image" />}
-                        </a>
-                    ))}
-                </InView> : null}
-            </div>
+                                    <img src={game.background_image} alt="Game same franchise" />
+                                </Link>
+                            ))}
+                        </div>
+                    </LazyLoad>
+                </InView >
+
+                {
+                    posts.results.length ? <InView as='section' class='reddit' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
+                        <h3 className="section-header">Recent reddit posts</h3>
+                        {posts.results.map(post => (
+                            <LazyLoad offset={300}>
+
+                                <a className="post" href={post.url}>
+                                    <div className="post-left">
+                                        <div className="post-header section-header">
+                                            <span>{post.username}</span>
+                                            <span>{post.created}</span>
+                                        </div>
+                                        <h6 className="post-header">{post.name}</h6>
+                                        {parse(post.text)}
+                                    </div>
+                                    {post.image && <img className="post-image" src={post.image} alt="Reddit post image" />}
+                                </a>
+                            </LazyLoad>
+
+                        ))}
+                    </InView> : null
+                }
+            </div >
         )
     }
     return (null)

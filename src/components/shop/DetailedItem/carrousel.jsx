@@ -1,33 +1,31 @@
-import { useState, useEffect} from "react"
+import { useState, useEffect, useRef } from "react"
+import LazyLoad from "react-lazy-load"
 
-export default function Carrousel({items, id}){
+export default function Carrousel({ items, id }) {
+    const [mounted, setMounted] = useState(false)
     const [offset, setOffset] = useState(items.length > 2 ? 1 : 0)
 
 
     const updateCarrousel = () => {
-        document.querySelector(`#${id} .carrousel-items`).style.left = `${((offset * - getWidths()[1]) + ((getWidths()[0] - getWidths()[1]) / 2))}px`
-        const allImages = document.querySelectorAll(`#${id} .carrousel-item`)
-        allImages.forEach(image => {
-            image.classList.remove('carrousel-main-item')
-            if (!image.paused && id === 'video') {
-                image.pause()
-            }
-        })
-        document.getElementById(`${offset + id}`).classList.add('carrousel-main-item')
-        if (id === 'video') document.getElementById(`${offset + id}`).play()
+          if(!mounted) return
+          document.querySelector(`#${id} .carrousel-items`).style.left = `${((offset * - getWidths()[1]) + ((getWidths()[0] - getWidths()[1]) / 2))}px`
+          const allImages = document.querySelectorAll(`#${id} .carrousel-item`)
+          allImages.forEach(image => {
+              image.classList.remove('carrousel-main-item')
+              if (!image.paused && id === 'video') {
+                  image.pause()
+              }
+          })
+          document.getElementById(`${offset + id}`).classList.add('carrousel-main-item')
+          if (id === 'video') document.getElementById(`${offset + id}`).play()
     }
-
-    useEffect(()=>{
-        updateCarrousel()
-        let timer = setTimeout(updateCarrousel, 100)
-
-        return ()=>clearTimeout(timer)
-    })
 
     useEffect(() => {
         updateCarrousel()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [offset])
+        let timer = setTimeout(updateCarrousel, 200)
+        return ()=>clearTimeout(timer)
+         //eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [offset, mounted])
 
     const handleLeftClick = () => {
         setOffset(prevState => {
@@ -38,9 +36,9 @@ export default function Carrousel({items, id}){
         })
     }
 
-    const getWidths = () =>{
+    const getWidths = () => {
         const parentElement = document.getElementById(id)
-        const childElement = document.querySelector(`#${id}>.carrousel-items>${id === 'video' ? 'video': 'img'}`)
+        const childElement = document.querySelector(`#${id}>.carrousel-items>${id === 'video' ? 'video' : 'img'}`)
         return [parentElement.offsetWidth, childElement.offsetWidth]
     }
 
@@ -53,8 +51,12 @@ export default function Carrousel({items, id}){
         })
     }
 
+    const buildCarrousel = () => {
+        setMounted(true)
+    }
+
     return (
-    <div className="carrousel-container" id={id}>
+        <div className="carrousel-container" id={id}>
             {(offset !== 0) &&
                 <span className="left-image" onClick={handleLeftClick}>
                     <svg style={{ width: "24px", height: "24px" }} viewBox="0 0 24 24">
@@ -67,15 +69,19 @@ export default function Carrousel({items, id}){
                         <path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
                     </svg>
                 </span>}
-            <div className="carrousel-items">
-                { id === 'image' 
-                ? items.map((element, index) => <img className="carrousel-item" id={index + id} src={element[id]} alt="" srcset="" />) 
-                : items.map((element, index) => 
-                <video className="carrousel-item" id={index + id} controls poster={element.preview}>
-                    <source src={element.data.max}  type="video/mp4"/>
-                </video>)
+
+            <LazyLoad offset={700} onContentVisible={buildCarrousel} className="carrousel-items">
+                <>
+                    {id === 'image'
+                        ? items.map((element, index) => <img className="carrousel-item" id={index + id} src={element[id]} alt="" srcset="" />)
+                        : items.map((element, index) =>
+                            <video className="carrousel-item" id={index + id} controls poster={element.preview}>
+                                <source src={element.data.max} type="video/mp4" />
+                            </video>)
                 }
-            </div>
-    </div>
+                </>
+            </LazyLoad>
+
+        </div>
     )
 }
