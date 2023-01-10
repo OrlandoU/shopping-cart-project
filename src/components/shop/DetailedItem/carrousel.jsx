@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect} from "react"
 import LazyLoad from "react-lazy-load"
 
 export default function Carrousel({ items, id }) {
@@ -22,7 +22,7 @@ export default function Carrousel({ items, id }) {
 
     useEffect(() => {
         updateCarrousel()
-        let timer = setTimeout(updateCarrousel, 200)
+        let timer = setTimeout(updateCarrousel, 300)
         return ()=>clearTimeout(timer)
          //eslint-disable-next-line react-hooks/exhaustive-deps
     }, [offset, mounted])
@@ -70,12 +70,12 @@ export default function Carrousel({ items, id }) {
                     </svg>
                 </span>}
 
-            <LazyLoad offset={700} onContentVisible={buildCarrousel} className="carrousel-items">
+            <LazyLoad offset={300} onContentVisible={buildCarrousel} className="carrousel-items">
                 <>
                     {id === 'image'
-                        ? items.map((element, index) => <img className="carrousel-item" id={index + id} src={element[id]} alt="" srcset="" />)
+                        ? items.map((element, index) => <img key={element[id]} className="carrousel-item" id={index + id} src={element[id]} alt="" />)
                         : items.map((element, index) =>
-                            <video className="carrousel-item" id={index + id} controls poster={element.preview}>
+                            <video key={element.preview} className="carrousel-item" id={index + id} controls poster={element.preview}>
                                 <source src={element.data.max} type="video/mp4" />
                             </video>)
                 }

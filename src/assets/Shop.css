@@ -760,3 +760,21 @@ section {
 .reddit-logo{
     height: 25px;
 }
+.game-series .LazyLoad{
+    position: absolute;
+    width: 100%;
+    top: 0;
+}
+.post-button{
+    background-color: transparent;
+    border: 1px solid #0f0f0f;
+    border-radius: 3px;
+    padding: 5px 15px;
+    color: #0f0f0f;
+    font-weight: 600;
+    transition: 400ms;
+}
+.post-button:hover{
+    background-color: #0f0f0f;
+    color: #eee;
+}
