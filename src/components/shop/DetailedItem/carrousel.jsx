@@ -1,13 +1,10 @@
 import { useState, useEffect} from "react"
-import LazyLoad from "react-lazy-load"
 
 export default function Carrousel({ items, id }) {
-    const [mounted, setMounted] = useState(false)
     const [offset, setOffset] = useState(items.length > 2 ? 1 : 0)
 
 
     const updateCarrousel = () => {
-          if(!mounted) return
           document.querySelector(`#${id} .carrousel-items`).style.left = `${((offset * - getWidths()[1]) + ((getWidths()[0] - getWidths()[1]) / 2))}px`
           const allImages = document.querySelectorAll(`#${id} .carrousel-item`)
           allImages.forEach(image => {
@@ -25,7 +22,7 @@ export default function Carrousel({ items, id }) {
         let timer = setTimeout(updateCarrousel, 300)
         return ()=>clearTimeout(timer)
          //eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [offset, mounted])
+    }, [offset])
 
     const handleLeftClick = () => {
         setOffset(prevState => {
@@ -51,10 +48,6 @@ export default function Carrousel({ items, id }) {
         })
     }
 
-    const buildCarrousel = () => {
-        setMounted(true)
-    }
-
     return (
         <div className="carrousel-container" id={id}>
             {(offset !== 0) &&
@@ -70,7 +63,7 @@ export default function Carrousel({ items, id }) {
                     </svg>
                 </span>}
 
-            <LazyLoad offset={300} onContentVisible={buildCarrousel} className="carrousel-items">
+            <div className="carrousel-items">
                 <>
                     {id === 'image'
                         ? items.map((element, index) => <img key={element[id]} className="carrousel-item" id={index + id} src={element[id]} alt="" />)
@@ -80,7 +73,7 @@ export default function Carrousel({ items, id }) {
                             </video>)
                 }
                 </>
-            </LazyLoad>
+            </div>
 
         </div>
     )

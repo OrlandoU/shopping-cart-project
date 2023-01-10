@@ -767,12 +767,15 @@ section {
 }
 .post-button{
     background-color: transparent;
-    border: 1px solid #0f0f0f;
+    border: 2px solid #0f0f0f;
     border-radius: 3px;
     padding: 5px 15px;
     color: #0f0f0f;
-    font-weight: 600;
+    font-weight: 900;
     transition: 400ms;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .post-button:hover{
     background-color: #0f0f0f;

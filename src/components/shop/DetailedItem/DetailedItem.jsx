@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
-import LazyLoad from "react-lazy-load"
 import Tag from "./Tag"
 import parse from 'html-react-parser'
 import { InView } from "react-intersection-observer"
@@ -100,9 +99,7 @@ export default function DetailedItem({ cartHasItem, removeCartItem, addCartItem 
             <div style={{ backgroundColor: `#${values.item.dominant_color}`, boxShadow: `0px -40px 40px 40px #${values.item.dominant_color}` }} className="detailedItem">
                 <InView as='section' class='hover-info' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
                     <div className="left-side">
-                        <LazyLoad offset={300}>
-                            <img src={values.item.background_image} className='game-cover' alt="item cover" />
-                        </LazyLoad>
+                        <img src={values.item.background_image} className='game-cover' alt="item cover" />
                     </div>
                     <div className="right-side">
                         <div className="item-header">{values.item.name}</div >
@@ -121,9 +118,9 @@ export default function DetailedItem({ cartHasItem, removeCartItem, addCartItem 
                         </div>
                     </div>
                 </InView>
-                {values.videos.results.length ? <InView as='div' class='video-container' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
+                {values.videos.results.length ? <div class='video-container'>
                     <Carrousel items={values.videos.results} id='video' />
-                </InView> : null}
+                </div> : null}
 
                 <InView as='section' class='description' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
                     <div className="section-header">Description</div>
@@ -141,27 +138,24 @@ export default function DetailedItem({ cartHasItem, removeCartItem, addCartItem 
                     {values.item.reddit_url && <a href={values.item.reddit_url} className='reddit-website'>{values.item.reddit_name}</a>}
                 </InView>
 
-                {values.images.results.length && <InView as='div' class='images-container' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
+                {values.images.results.length && <div class='images-container section-visible'>
                     <Carrousel items={values.images.results} id='image' />
-                </InView>}
+                </div>}
 
 
 
-                <InView as='section' class='more-games' onChange={(inView, entry) => { (inView && entry.target.classList.add('sectionVisible')) }}>
+                <section class='more-games sectionVisible' >
                     <h3 className="section-header">More from the same Series</h3>
 
                     <div className="games-container">
                         {values.games.results.map(game => (
                             <Link className="game-series" to={`/shop/id/${game.id}`}>
                                 <span className="game-name">{game.name}</span>
-                                <LazyLoad offset={300} style={{position: 'absolute'}}>
                                     <img src={game.background_image} alt="Game same franchise" />
-                                </LazyLoad>
                             </Link>
                         ))}
                     </div>
-
-                </InView >
+                </section>
 
                 {
                     values.posts.results.length
@@ -177,7 +171,7 @@ export default function DetailedItem({ cartHasItem, removeCartItem, addCartItem 
                                         <h6 className="post-header">{post.name}</h6>
                                     </div>
 
-                                    {post.image ? <LazyLoad offset={300}> <img className="post-image" src={post.image} alt="Reddit post image" /> </LazyLoad> : null}
+                                    {post.image ?<img className="post-image" src={post.image} alt="Reddit post image" />: null}
                                     <a className="post-button" href={post.url}>Go to Post</a>
                                 </div>
                             ))}
