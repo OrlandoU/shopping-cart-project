@@ -275,10 +275,25 @@ a{
     font-size: .7rem !important;
     padding: 5px 10px;
   }
+  #root{
+    background-image: none !important;
+    background-color: #4141a1;
+  }
+  #root::after{
+    display: none !important;
+  }
+  *{
+    backdrop-filter: none !important;
+  }
+  .main-menu.menu-expanded+ul{
+    backdrop-filter: blur(8px) !important;
+  }
+
 }
 
 .main-menu.menu-expanded + ul {
   display: flex;
+  justify-content: flex-start;
   flex-direction: column;
   gap: 40px;
   z-index: 100;
