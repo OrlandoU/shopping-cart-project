@@ -1,29 +1,32 @@
-# Shopping Cart Project
-A web app that allows users to add video games to a shopping cart and manage their orders, built using React and React Router and utilizing the RAWG Video Games Database API for shop-item generation as part of the [The Odin Project](https://www.theodinproject.com) curriculum.
+# Shopping Cart App
+A web app for a virtual shopping cart, built using React-Router and consuming the RAWG Video Games Database API, hosted on GitHub Pages as part of the [The Odin Project](https://www.theodinproject.com) curriculum.
+
+## Live Demo
+Check out the live demo at https://orlandou.github.io/shopping-cart/
 
 ## Getting Started
 - Prerequisites: Node.js, npm
-- Installation: 
-  1. `git clone https://github.com/<username>/shopping-cart.git` 
-  2. `cd shopping-cart` 
-  3. `npm install` 
-  4. `npm start`
+- Clone the repo: `git clone https://github.com/OrlandoU/shopping-cart.git`
+- Install dependencies: `npm install`
+- Start the development server: `npm start`
+- Build for production: `npm run build`
 
 ## Features
-- Browse and add video games to cart
-- View and edit cart contents
-- Place an order
-- View order history
+- Browse and add items to the cart
+- View and edit items in the cart
+- Checkout and submit orders (simulated)
+- Consumes the RAWG Video Games Database API for dynamic item generation
 
 ## Built With
 - React
-- React Router
-- RAWG Video Games Database API
+- React-Router
+- HTML
 - CSS
+- JavaScript
+- RAWG Video Games Database API
 
 ## Contributing
 Fork repo and submit pull request.
 
-## Acknowledgments
-Inspiration from e-commerce websites such as [Steam](https://store.steampowered.com/).
+
 
