@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './assets/index.css';
 import App from './components/App';
 import { HashRouter } from 'react-router-dom';
+import 'path-browserify';
+import 'os-browserify/browser';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

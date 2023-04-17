@@ -15,7 +15,7 @@ export default function DetailedItem({ cartHasItem, removeCartItem, addCartItem 
     const fetchItem = async (id) => {
         document.querySelector('.loading-screen').classList.add('visible')
         try {
-            let response = await fetch(`https://api.rawg.io/api/games/${id}?key=a1922842dfc24abb9c57b3377ecc5774`, { mode: 'cors' })
+            let response = await fetch(`https://api.rawg.io/api/games/${id}?key=${process.env.REACT_APP_API_KEY }`, { mode: 'cors' })
             let data = await response.json()
             return data
         } catch (error) {
@@ -25,7 +25,7 @@ export default function DetailedItem({ cartHasItem, removeCartItem, addCartItem 
 
     const fetchPosts = async (id) => {
         try {
-            let response = await fetch(`https://api.rawg.io/api/games/${id}/reddit?key=a1922842dfc24abb9c57b3377ecc5774`, { mode: 'cors' })
+            let response = await fetch(`https://api.rawg.io/api/games/${id}/reddit?key=${process.env.REACT_APP_API_KEY }`, { mode: 'cors' })
             let data = await response.json()
             return data
         } catch (error) {
@@ -35,7 +35,7 @@ export default function DetailedItem({ cartHasItem, removeCartItem, addCartItem 
 
     const fetchImgs = async (id) => {
         try {
-            let response = await fetch(`https://api.rawg.io/api/games/${id}/screenshots?key=a1922842dfc24abb9c57b3377ecc5774`, { mode: 'cors' })
+            let response = await fetch(`https://api.rawg.io/api/games/${id}/screenshots?key=${process.env.REACT_APP_API_KEY }`, { mode: 'cors' })
             let data = await response.json()
             return data
         } catch (error) {
@@ -45,7 +45,7 @@ export default function DetailedItem({ cartHasItem, removeCartItem, addCartItem 
 
     const fetchVideos = async (id) => {
         try {
-            let response = await fetch(`https://api.rawg.io/api/games/${id}/movies?key=a1922842dfc24abb9c57b3377ecc5774`, { mode: 'cors' })
+            let response = await fetch(`https://api.rawg.io/api/games/${id}/movies?key=${process.env.REACT_APP_API_KEY }`, { mode: 'cors' })
             let data = await response.json()
             return data
         } catch (error) {
@@ -55,7 +55,7 @@ export default function DetailedItem({ cartHasItem, removeCartItem, addCartItem 
 
     const fetchGames = async (id) => {
         try {
-            let response = await fetch(`https://api.rawg.io/api/games/${id}/game-series?key=a1922842dfc24abb9c57b3377ecc5774`, { mode: 'cors' })
+            let response = await fetch(`https://api.rawg.io/api/games/${id}/game-series?key=${process.env.REACT_APP_API_KEY }`, { mode: 'cors' })
             let data = await response.json()
             return data
         } catch (error) {

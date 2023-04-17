@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Item from "./Item";
 import '../../assets/Shop.css'
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import DetailedHeader from "./DetailedItem/DetailedHeader";
 
 
@@ -24,7 +24,7 @@ export default function Shop(props) {
     const queryGames = async () => {
         document.querySelector('.loading-screen').classList.add('visible')
         try {
-            let response = await fetch(`https://api.rawg.io/api/games?key=a1922842dfc24abb9c57b3377ecc5774&page_size=50&ordering=${direction + order}&page=${page}&${getUrl()}`, { mode: 'cors' })
+            let response = await fetch(`https://api.rawg.io/api/games?key=${ process.env.REACT_APP_API_KEY }&page_size=50&ordering=${direction + order}&page=${page}&${getUrl()}`, { mode: 'cors' })
             let data = await response.json()
             setItems(data.results)
         } catch (error) {
@@ -61,7 +61,7 @@ export default function Shop(props) {
         return () => {
             document.querySelector('.nav-bar').classList.remove('show')
         }
-    }, [page, order, direction, useLocation()])
+    }, [page, order, direction])
 
 
 
@@ -96,9 +96,7 @@ export default function Shop(props) {
             {new URLSearchParams(urlParams).get('filter') && <DetailedHeader />}
             <ul className="shop-items-container">
                 {items.map(item => (
-
                     <Item cartHasItem={props.cartHasItem} key={item.id} {...props} item={item} />
-
                 ))}
             </ul>
             <footer>

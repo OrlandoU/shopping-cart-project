@@ -6,7 +6,7 @@ export default function DetailedHeader() {
     const urlParams = useParams()
 
     const queryData = async () => {
-        let response = await fetch(`https://api.rawg.io/api/${urlParams.filter}/${urlParams.value}?key=a1922842dfc24abb9c57b3377ecc5774&`)
+        let response = await fetch(`https://api.rawg.io/api/${urlParams.filter}/${urlParams.value}?key=${process.env.REACT_APP_API_KEY }`)
         let parsedResponse = await response.json()
         console.log(parsedResponse)
         setData(parsedResponse)

@@ -1,12 +1,12 @@
 import '../assets/App.css';
 import '../assets/loader.css'
-import {  Routes, Route, NavLink, useNavigate } from 'react-router-dom';
+import { Routes, Route, NavLink, useNavigate } from 'react-router-dom';
 import Home from './home/Home'
 import About from './about/About'
 import Cart from './cart/Cart';
 import Shop from './shop/Shop';
 import Item from './shop/DetailedItem/DetailedItem';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import logo from '../assets/LOGO.png'
 
 function App() {
@@ -15,7 +15,8 @@ function App() {
   const navigate = useNavigate()
   const mounted = useRef()
 
-  useEffect(()=>{
+  useEffect(() => {
+    window.addEventListener('scroll', changeColor)
     getItems()
   }, [])
 
@@ -31,88 +32,87 @@ function App() {
     document.body.classList.remove('body-fixed')
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     saveItems()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cart])
 
   const saveItems = () => {
-    if(!mounted.current){
+    if (!mounted.current) {
       mounted.current = true
     }
-    else{
+    else {
       window.localStorage.setItem('shop-items', JSON.stringify(cart))
     }
   }
 
   const getItems = () => {
     let data = JSON.parse(window.localStorage.getItem('shop-items'))
-    if(!data) return
+    if (!data) return
     setCart(data)
   }
 
-  const addCartItem = (item) => {
-    console.log(item)
-    setCart(prevState=>{
+  const addCartItem = useCallback((item) => {
+    setCart(prevState => {
       return [
         ...prevState,
         item
       ]
     })
-    
-  }
+  }, [])
 
-  const removeCartItem = (id) => {
-    console.log(id)
+  const removeCartItem = useCallback((id) => {
     setCart(prevState => prevState.filter(item => item.id !== id))
-  }
+  }, [])
 
-  const cartHasItem = (item) => {
-    return cart.reduce((prev, crr)=>{
-      if(crr.id === item.id) return true
+
+  const cartHasItem = useCallback((item) => {
+    return cart.reduce((prev, crr) => {
+      if (crr.id === item.id) return true
       return prev
     }, false)
-  }
+  }, [cart])
 
   const handleSearch = (e) => {
-    if(e.key && e.key !== 'Enter') return
+    if (e.key && e.key !== 'Enter') return
     let input = document.querySelector('.nav-search-input')
     retrieveMenu(e)
     navigate(`/shop/q/${input.value}`)
   }
 
+
   const changeColor = () => {
     let scroll = window.scrollY
-    if(!scroll) return
-    
-    if(scroll >= 150){
+    if (!scroll) return
+
+    if (scroll >= 150) {
       document.querySelector('.nav-bar').classList.add('show')
       return
     }
     document.querySelector('.nav-bar').classList.remove('show')
   }
 
-  window.addEventListener('scroll', changeColor)
+
 
   return (
     <>
       {menuExpanded && <div className="blurred-background"></div>}
       <nav className='nav-bar'>
         <NavLink to='/'>
-          <img src={logo} alt="" className='logo'/>
+          <img src={logo} alt="" className='logo' />
         </NavLink>
-          <svg style={{width:"24px",height:"24px"}} onClick={expandMenu} className={menuExpanded ? 'main-menu menu-expanded' : 'main-menu'} viewBox="0 0 24 24">
-            <path fill="currentColor" d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
-          </svg>
-        
+        <svg style={{ width: "24px", height: "24px" }} onClick={expandMenu} className={menuExpanded ? 'main-menu menu-expanded' : 'main-menu'} viewBox="0 0 24 24">
+          <path fill="currentColor" d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
+        </svg>
+
         <ul className='nav-links' onClick={retrieveMenu}>
           {menuExpanded && <h1>ReactZ</h1>}
           <li className='search-bar-container' onKeyDown={handleSearch} >
-            <input type="text" className='nav-search-input' onClick={(e) => e.stopPropagation()} placeholder='Games....'/>
+            <input type="text" className='nav-search-input' onClick={(e) => e.stopPropagation()} placeholder='Games....' />
             <svg viewBox="0 0 24 24" className='search-icon' onClick={handleSearch}>
               <path fill="currentColor" d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
             </svg>
-              <span></span>
+            <span></span>
           </li>
           <li>
             <NavLink to='/'>Home</NavLink>
@@ -153,10 +153,10 @@ function App() {
           <Route path='/shop/q/:search?' element={<Shop cartHasItem={cartHasItem} addCartItem={addCartItem} key={document.location.href} />} />
           <Route path='/shop/:filter?/:value?' element={<Shop cartHasItem={cartHasItem} addCartItem={addCartItem} key={document.location.href} />} />
         </Routes>
-        
-        
+
+
       </div>
-      
+
     </>
   );
 }

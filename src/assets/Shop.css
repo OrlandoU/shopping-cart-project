@@ -713,11 +713,6 @@ section {
     margin: 10px 0px;
 }
 
-.post:hover {
-    transform: translateX(-10px);
-    background-color: #fbfef9d0;
-}
-
 .external-links {
     flex-direction: row;
     font-weight: 600;
@@ -776,6 +771,7 @@ section {
     display: flex;
     align-items: center;
     justify-content: center;
+    align-self: flex-end;
 }
 .post-button:hover{
     background-color: #0f0f0f;
